@@ -14,11 +14,22 @@ export class FleetDataService{
             switch(data.type){
                 case 'drone':
                     //this.drones.push(data); //This would be raw way of sending data.
-                    this.loadDrones(data);
+                    // We weren't doing any kind of data validation, hence errors creep in.
+                    if(this.validateDroneData(data)){
+                        this.loadDrones(data);
+                    } else {// Log the error data
+                        let err = new DataError("Invalid Drone Type", data);
+                        this.errors.push(err);
+                    }
                     break;
                 case 'car':
-                    //this.cars.push(data);
-                    this.loadCars(data);
+                    if(this.validateCarData(data)){
+                        //this.cars.push(data);
+                        this.loadCars(data);
+                    } else {// Log the error data
+                        let err = new DataError("Invalid Car Type", data);
+                        this.errors.push(err);
+                    }
                     break;
                 default:
                     let err = new DataError("Invalid Vehicle Type", data);
@@ -45,5 +56,29 @@ export class FleetDataService{
         } catch(err){
             this.errors.push("Error loading cars", data);
         }
+    }
+    
+    validateCarData(data){
+        let reqs = 'license model latLong miles make'.split(' ');
+        let isCar = true;
+        for(let req of reqs){
+            //console.log(data[req]);
+            if(!data[req]){
+                this.errors.push(new DataError(`Invalid field ${req}`, data)); 
+                isCar = false;
+            }
+        }
+        return isCar;
+    }
+    validateDroneData(data){
+        let reqs = 'license model latLong airTimeHours base'.split(' ');
+        let isDrone = true;
+        for(let req of reqs){
+            if(!data[req]){
+                this.errors.push(new DataError(`Invalid field ${req}`, data)); 
+                isDrone = false;
+            }
+        }
+        return isDrone;
     }
 }
