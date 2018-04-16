@@ -7,13 +7,12 @@ import {FleetDataService} from './Services/fleet-data-service.js'
 // Loading Core Data
 let data = new FleetDataService();
 data.loadData(fleet);
-console.log("Cars licences are :");
-for(let car of data.cars){
-    console.log(car.license);   
-}
-console.log("Data loading errors are :");
-for(let err of data.errors){
-    console.log(err);   
-}
-console.log("Drones data is :", data.drones);
+//Querying and Sorting Data
+let car = data.getCarByLicense('AT9900');
+console.log(car);
 
+// Sorting the cars based on licenses
+console.log("Before sorting Cars are like this:", data.cars);
+let cars = data.getCarsSortedByLicense();
+console.log("After sorting Cars are like this:");
+console.log(cars);

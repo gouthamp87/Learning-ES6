@@ -81,4 +81,24 @@ export class FleetDataService{
         }
         return isDrone;
     }
+    
+    // This would return fine and return car by License number.
+    getCarByLicense(license){
+        // Since cars is a array object we can use Find.
+        // Syntax for find is like below.
+        return this.cars.find(function(car){
+            return car.license === license;
+        });
+    }
+    
+    getCarsSortedByLicense(){
+        // We can use Array sort function to sort
+        return this.cars.sort(function(car1, car2){
+            if(car1.license < car2.license)
+                return -1;      // Car1 License should be alphabetically before car2
+            if(car2.license < car1.license)
+                return 1;       // Dont swap if they are of the same order.
+            return 0            // If they are same don't change.
+        });
+    }
 }
