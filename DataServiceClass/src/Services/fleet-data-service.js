@@ -101,4 +101,8 @@ export class FleetDataService{
             return 0            // If they are same don't change.
         });
     }
+    filterCarsByMake(str){
+        // We can use filter method of Arrays and fat arrow notation.
+        return this.cars.filter(car => car.make.indexOf(str) >= 0);
+    }
 }
